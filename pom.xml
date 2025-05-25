@@ -76,6 +76,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <release>17</release> <!-- FORCE Java 17 compilation -->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
