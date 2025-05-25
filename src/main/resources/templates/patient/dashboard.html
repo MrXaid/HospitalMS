@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patient Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f6fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #2f3640;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-left h2 {
+            margin: 0;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar-right a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background-color: #e84118;
+            border: none;
+            padding: 10px 16px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        /* Card Style */
+        .card {
+            background-color: white;
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #2f3640;
+        }
+
+        .card p {
+            margin: 8px 0;
+        }
+
+        .appointments {
+            margin-top: 30px;
+        }
+
+        .doctor-card {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .search-section input[type="text"],
+        .search-section button {
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #00a8ff;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-left">
+        <h2 th:text="${user.fullName}">User Name</h2>
+    </div>
+    <div class="navbar-right">
+        <a href="/pharmacy">Pharmacy</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+</div>
+
+<!-- User Details Card -->
+<div class="card">
+    <h3>Your Details</h3>
+    <p>Email: <span th:text="${user.email}">email@example.com</span></p>
+    <p>Phone:
+        <span th:if="${user.phoneNumber != null}" th:text="${user.phoneNumber}">1234567890</span>
+        <span th:if="${user.phoneNumber == null}">N/A</span>
+    </p>
+    <p>Gender:
+        <span th:if="${user.gender != null}" th:text="${user.gender}">Male</span>
+        <span th:if="${user.gender == null}">N/A</span>
+    </p>
+    <p>Address:
+        <span th:if="${user.address != null}" th:text="${user.address}">Some Address</span>
+        <span th:if="${user.address == null}">N/A</span>
+    </p>
+
+    <div class="appointments">
+        <h3>Appointments</h3>
+
+        <div th:if="${appointments.size() == 0}">
+            You have no upcoming appointments.
+        </div>
+
+        <ul th:if="${appointments.size() > 0}">
+            <li th:each="app : ${appointments}">
+                Appointment ID: <span th:text="${app.id}"></span>,
+                Date & Time: <span th:text="${#temporals.format(app.dateTime, 'yyyy-MM-dd HH:mm')}"></span>,
+                Status: <span th:text="${app.status}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Available Doctors -->
+<div class="card">
+    <h3>Available Doctors</h3>
+    <div th:if="${doctors.size() == 0}">
+        No doctors available at the moment.
+    </div>
+    <div th:each="doctor : ${doctors}" class="doctor-card">
+        <p><strong>Name:</strong> <span th:text="${doctor.fullName}">Dr. Name</span></p>
+        <p><strong>Specialization:</strong> <span th:text="${doctor.specialization}">Specialization</span></p>
+        <p><strong>Available Days:</strong> <span th:text="${doctor.availableDays}">Mon-Fri</span></p>
+
+        <form th:action="@{/appointments/form}" method="get">
+            <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+            <button type="submit">Book Appointment</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

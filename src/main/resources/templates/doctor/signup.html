@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doctor Registration - Hospital Management System</title>
+    <style>
+        /* Body and general styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        /* Navbar styles consistent with home page */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #3498db;
+        }
+
+        .welcome-message {
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Form container styling */
+        .form-container {
+            background: white;
+            max-width: 500px;
+            margin: 3rem auto;
+            padding: 2.5rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="time"],
+        textarea {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1.5px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="time"]:focus,
+        textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        /* For the time input group */
+        .time-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-group input[type="time"] {
+            width: 48%;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            padding: 0.8rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+    </style>
+
+    <!-- FontAwesome for navbar icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- Navbar Fragment -->
+<div th:replace="fragments/navbar :: navbar(${user})"></div>
+
+<!-- Doctor Signup Form -->
+<div class="form-container">
+    <h2>Doctor Registration</h2>
+    <form th:action="@{/doctor/signup}" method="post">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+        </div>
+
+        <div class="form-group">
+            <label for="specialization">Specialization</label>
+            <input type="text" id="specialization" name="specialization" required />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="education">Education</label>
+            <input type="text" id="education" name="education" />
+        </div>
+
+        <div class="form-group">
+            <label for="availableDays">Available Days (comma separated)</label>
+            <input type="text" id="availableDays" name="availableDays" placeholder="Monday,Wednesday,Friday" />
+        </div>
+
+        <div class="form-group">
+            <label>Working Hours</label>
+            <div class="time-group">
+                <input type="time" name="startTime" />
+                <span>to</span>
+                <input type="time" name="endTime" />
+            </div>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <div class="login-link">
+        <p>Already have an account? <a th:href="@{/doctor/login}">Login here</a></p>
+    </div>
+</div>
+
+</body>
+</html>

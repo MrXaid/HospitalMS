@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Doctor Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f6fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #2f3640;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .logout-btn {
+            background-color: #e84118;
+            border: none;
+            padding: 10px 16px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        /* Card Style */
+        .card {
+            background-color: white;
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #2f3640;
+        }
+
+        .card p {
+            margin: 8px 0;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 16px;
+            background-color: #00a8ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Availability Box */
+        .availability {
+            background-color: #dff9fb;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h2>Dr. <span th:text="${user.fullName}">Doctor Name</span></h2>
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
+<!-- Professional Information -->
+<div class="card">
+    <h3>Professional Information</h3>
+    <p><strong>Specialization:</strong> <span th:text="${user.specialization}">Cardiology</span></p>
+    <p><strong>Education:</strong> <span th:text="${user.education}">MBBS, MD</span></p>
+    <p><strong>About:</strong> <span th:text="${user.description}">Brief intro here</span></p>
+    <a th:href="@{/doctor/profile/edit}" class="btn">Edit Profile</a>
+</div>
+
+<!-- Availability Section -->
+<div class="card">
+    <h3>Availability</h3>
+    <div class="availability">
+        <p><strong>Available Days:</strong> <span th:text="${user.availableDays}">Monday - Friday</span></p>
+        <p><strong>Time:</strong>
+            <span th:text="${user.startTime}">09:00</span> - <span th:text="${user.endTime}">17:00</span>
+        </p>
+    </div>
+    <a th:href="@{/doctor/schedule/edit}" class="btn">Update Schedule</a>
+</div>
+
+<!-- Appointments Section -->
+<div class="card">
+<div class="appointments">
+    <h3>Appointments</h3>
+
+    <div th:if="${appointments.size() == 0}">
+        You have no upcoming appointments.
+    </div>
+
+    <ul th:if="${appointments.size() > 0}">
+        <li th:each="app : ${appointments}">
+            Appointment ID: <span th:text="${app.id}"></span>,
+            Date & Time: <span th:text="${#temporals.format(app.dateTime, 'yyyy-MM-dd HH:mm')}"></span>,
+            Status: <span th:text="${app.status}"></span>
+        </li>
+    </ul>
+</div>
+</div>
+
+</body>
+</html>

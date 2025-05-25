@@ -1,0 +1,25 @@
+<div th:fragment="navbar(user)">
+    <nav class="navbar">
+        <a th:href="@{/}" class="logo">HospitalMS</a>
+
+        <div class="nav-links">
+            <div th:if="${user == null}">
+                <a th:href="@{/chatwithai}" class="active"><i class="fas fa-robot"></i> AI Assistant</a>
+                <a href="/patient/login">Patient Login</a>
+                <a href="/doctor/login">Doctor Login</a>
+            </div>
+
+            <div th:if="${user != null}" style="display: flex; align-items: center;">
+                <span class="welcome-message">
+                    <span th:if="${user instanceof T(com.example.hospital.dto.DoctorDTO)}">
+                        <i class="fas fa-user-md"></i> Dr. <span th:text="${user.fullName}"></span>
+                    </span>
+                    <span th:unless="${user instanceof T(com.example.hospital.dto.DoctorDTO)}">
+                        <i class="fas fa-user"></i> <span th:text="${user.fullName}"></span>
+                    </span>
+                </span>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+</div>

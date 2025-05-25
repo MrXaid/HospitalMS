@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Pharmacy</title>
+    <style>
+        /* RESET unwanted spacing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            padding-bottom: 40px;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: #2f3640;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .logout-btn {
+            background-color: #e84118;
+            border: none;
+            padding: 10px 16px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            margin-right: 15px;
+            padding: 10px 16px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #3b4750;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin: 30px 0 10px 0;
+        }
+
+        /* SEARCH BAR MOCK */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 40px 0;
+        }
+
+        .search-box {
+            width: 400px;
+            position: relative;
+        }
+
+        .search-box input[type="text"] {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .search-box::after {
+            content: '🔍';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 18px;
+            color: #aaa;
+        }
+
+        /* PRODUCT CARD STYLES */
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .product-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            flex-grow: 1;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+
+        .product-price {
+            font-size: 1.2em;
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: block;
+            width: 180px;
+            margin: 50px auto 0;
+            text-align: center;
+            padding: 12px 0;
+            background-color: #2980b9;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: #1c5980;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar from patient dashboard -->
+<div class="navbar">
+    <h2 th:text="${user.fullName}">User Name</h2>
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/pharmacy">Pharmacy</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+</div>
+
+<h1>Pharmacy Products</h1>
+
+<!-- Search bar mock -->
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" placeholder="Search for medicine...">
+    </div>
+</div>
+
+<!-- Product cards -->
+<div class="products-container">
+    <div th:each="product : ${products}" class="product-card">
+        <div class="product-name" th:text="${product.name}">Medicine Name</div>
+        <div class="product-description" th:text="${product.description}">Description</div>
+        <div class="product-price" th:text="${'$' + product.price}">$0.00</div>
+    </div>
+</div>
+
+<a href="/dashboard" class="back-link">Back to Dashboard</a>
+
+</body>
+</html>
