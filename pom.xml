@@ -23,6 +23,7 @@
     </properties>
 
     <dependencies>
+        <!-- Your dependencies unchanged -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -68,15 +69,26 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Override Spring Boot default compiler plugin version -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <!-- Explicitly use the version from pluginManagement -->
                 <configuration>
                     <source>17</source>
                     <target>17</target>
-                    <release>17</release> <!-- FORCE Java 17 compilation -->
+                    <release>17</release> <!-- This enforces Java 17 -->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
